@@ -6,8 +6,6 @@ import CreatePost from './CreatePost';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import { Timestamp } from 'firebase/firestore';
-import { describe } from 'node:test';
-import { scryRenderedDOMComponentsWithClass } from 'react-dom/test-utils';
 
 interface PostElement{
     email: string, // It's safe to access user.email directly since we checked user is not null
