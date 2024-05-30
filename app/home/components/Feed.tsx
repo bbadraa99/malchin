@@ -8,6 +8,7 @@ import { db } from '../../firebase/config';
 import { Timestamp } from 'firebase/firestore';
 
 interface PostElement{
+    id: string,
     email: string, // It's safe to access user.email directly since we checked user is not null
     timestamp: Timestamp,
     title: string,
@@ -26,7 +27,8 @@ const Feed = () => {
             query(collection(db, "posts"), orderBy("timestamp", "desc")), 
             (snapshot) => {
                 const postsData = snapshot.docs.map(doc => ({
-                    ...doc.data()
+                    ...doc.data(),
+                    id: doc.id
                 })) as PostElement[]; 
                 setPosts(postsData);
             }
@@ -42,12 +44,14 @@ const Feed = () => {
     };
 
     const [currentPost, setCurrentPost] = useState({ 
+        id: "1",
         title: '', 
         description: '', 
         salary: '', 
         location: '',
         email: '',
-        contact: '',});
+        contact: '',
+        timestamp: Timestamp.now()});
     
     useEffect(() => {
         if (posts.length > 0) {
@@ -56,16 +60,19 @@ const Feed = () => {
     }, [posts]);
 
     const handleClick = (element: PostElement ) => {
-        setCurrentPost({ title: element.title, 
-                        salary: element.salary, 
-                        location: element.location, 
-                        description: element.description, 
-                        email: element.email, 
-                        contact: element.contact });
+        setCurrentPost({ 
+            id: element.id, 
+            title: element.title, 
+            salary: element.salary, 
+            location: element.location, 
+            description: element.description, 
+            email: element.email, 
+            contact: element.contact, 
+            timestamp: element.timestamp });
     };
 
   return (
-    <div className='w-full p-10 pt-20 flex flex-col'>
+    <div className='w-full p-10 py-10 flex flex-col'>
         <div className='center pb-10'>
             <button className="w-1/2 btn bg-background-10 hover:bg-background-20 font-spartan text-white bold-28 flex" onClick={handlePostCreation}>Create post</button>
         </div>
@@ -81,12 +88,14 @@ const Feed = () => {
             </div>
             <div className='w-3/5 border-2 rounded-lg border-gray-400 flex h-fit'>
                 <Post 
+                    id = {currentPost.id}
                     title={currentPost.title}
-                    salary={currentPost.title} 
+                    salary={currentPost.salary} 
                     location={currentPost.location} 
                     description={currentPost.description} 
                     email={currentPost.email} 
-                    contact={currentPost.contact}/>
+                    contact={currentPost.contact}
+                    timestamp={currentPost.timestamp}/>
             </div>
         </div>
         
