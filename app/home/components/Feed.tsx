@@ -1,26 +1,97 @@
-import React, { useState } from 'react'
+
+import React, { useEffect, useState } from 'react'
 import Post from './Post'
 import PostPrefix from './PostPrefix'
+import CreatePost from './CreatePost';
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { db } from '../../firebase/config';
+import { Timestamp } from 'firebase/firestore';
+import { describe } from 'node:test';
+import { scryRenderedDOMComponentsWithClass } from 'react-dom/test-utils';
+
+interface PostElement{
+    email: string, // It's safe to access user.email directly since we checked user is not null
+    timestamp: Timestamp,
+    title: string,
+    salary: string,
+    location: string,
+    contact: string,
+    description: string,
+}
 
 const Feed = () => {
 
-    const [currentPost, setCurrentPost] = useState({ title: '', salary: '', location: '' });
+    const [posts, setPosts] = useState<PostElement[]>([]);
 
-    const handleClick = (title: string, salary: string, location: string) => {
-        setCurrentPost({ title: title, salary: salary, location: location });
+    useEffect(() => {
+        const unsubscribe = onSnapshot(
+            query(collection(db, "posts"), orderBy("timestamp", "desc")), 
+            (snapshot) => {
+                const postsData = snapshot.docs.map(doc => ({
+                    ...doc.data()
+                })) as PostElement[]; 
+                setPosts(postsData);
+            }
+        );
+        return () => unsubscribe();
+    }, [db]);
+
+
+    const [isCreatePost, setIsCreatePost] = useState(false);
+
+    const handlePostCreation = () => {
+        setIsCreatePost(!isCreatePost);
+    };
+
+    const [currentPost, setCurrentPost] = useState({ 
+        title: '', 
+        description: '', 
+        salary: '', 
+        location: '',
+        email: '',
+        contact: '',});
+    
+    useEffect(() => {
+        if (posts.length > 0) {
+            setCurrentPost(posts[0]);
+        }
+    }, [posts]);
+
+    const handleClick = (element: PostElement ) => {
+        setCurrentPost({ title: element.title, 
+                        salary: element.salary, 
+                        location: element.location, 
+                        description: element.description, 
+                        email: element.email, 
+                        contact: element.contact });
     };
 
   return (
-    <div className='w-full p-10 pt-20 flex flex-row justify-between'>
-        <div className='w-2/5 pr-10 space-y-6'>
-            <PostPrefix onclick={() => handleClick("Needs support for herderman", '100000', "Sukhbaatar aimag")} title="Needs support for herderman" location="Sukhbaatar aimag" salary='100000'/>
-            <PostPrefix onclick={() => handleClick("Needs support for herderman", '100000', "Sukhbaatar aimag")} title="Needs support for herderman" location="Sukhbaatar aimag" salary='100000'/>
-            <PostPrefix onclick={() => handleClick("Needs support for herderman", '100000', "Sukhbaatar aimag")} title="Needs support for herderman" location="Sukhbaatar aimag" salary='100000'/>
-            <PostPrefix onclick={() => handleClick("Needs support for herderman", '100000', "Sukhbaatar aimag")} title="Needs support for herderman" location="Sukhbaatar aimag" salary='100000'/>
+    <div className='w-full p-10 pt-20 flex flex-col'>
+        <div className='center pb-10'>
+            <button className="w-1/2 btn bg-background-10 hover:bg-background-20 font-spartan text-white bold-28 flex" onClick={handlePostCreation}>Create post</button>
         </div>
-        <div className='w-3/5 border-2 rounded-lg border-black flex h-fit'>
-            <Post title={currentPost.title} salary={currentPost.title} location={currentPost.location} />
+        
+        {isCreatePost? <CreatePost onclose={handlePostCreation}/> : <></>}
+        <div className='w-full flex flex-row justify-between'>
+            <div className='w-2/5 pr-10 space-y-6'>
+                {
+                    posts.map(post => {
+                        return <PostPrefix onclick={() => handleClick(post)} email={post.email} title={post.title} location={post.location} salary={post.salary} />
+                    })
+                }
+            </div>
+            <div className='w-3/5 border-2 rounded-lg border-gray-400 flex h-fit'>
+                <Post 
+                    title={currentPost.title}
+                    salary={currentPost.title} 
+                    location={currentPost.location} 
+                    description={currentPost.description} 
+                    email={currentPost.email} 
+                    contact={currentPost.contact}/>
+            </div>
         </div>
+        
     </div>
   )
 }

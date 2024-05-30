@@ -13,11 +13,11 @@ const Navbar_home = () => {
     const [user] = useAuthState(auth);
     const router = useRouter();
 
-    // useEffect(() => {
-    //     if (!user) {
-    //         router.push('/sign-in');
-    //     }
-    // }, [user, router]);
+    useEffect(() => {
+        if (!user) {
+            router.push('/sign-in');
+        }
+    }, [user, router]);
 
     const handleSignOut = () => {
         signOut(auth)
@@ -39,7 +39,7 @@ const Navbar_home = () => {
             </div>
             <p className="hidden sm:block px-16 py-2 rounded-lg hover:bg-gray-100 hover:bg-opacity-30 text-white font-spartan regular-20 cursor-pointer">Feed</p>
             <div className='px-6 space-x-6 flex flex-row center'>
-                {/* <p className="regular-16 font-spartan text-white">{user ? user.email : 'Unknown'}</p> */}
+                <p className="regular-16 font-spartan text-white">{user ? user.email : 'Unknown'}</p>
                 <button 
                     className="bg-transparent text-white hover:bg-gray-100 hover:text-background-10 border-white px-4 py-2 border-2 rounded-md regular-18 font-spartan" 
                     onClick={handleSignOut}>

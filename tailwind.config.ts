@@ -43,6 +43,7 @@ module.exports = {
         },
         background: {
           10: '#008631',
+          20: '#00AB41',
         }
       },
       screens: {
