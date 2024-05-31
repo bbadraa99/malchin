@@ -73,8 +73,14 @@ const Feed = () => {
 
   return (
     <div className='w-full p-10 py-10 flex flex-col'>
-        <div className='center pb-10'>
-            <button className="w-1/2 btn bg-background-10 hover:bg-background-20 font-spartan text-white bold-28 flex" onClick={handlePostCreation}>Create post</button>
+
+        <div className='pb-10 flex flex-row'>
+            <button className="w-fit btn bg-background-10 hover:bg-background-20 font-spartan text-white bold-28 flex" onClick={handlePostCreation}>Create post</button>
+            {/* Implement search  */}
+            <input 
+                type="text" 
+                placeholder="Search your dream job" 
+                className="input input-bordered text-black"/>
         </div>
         
         {isCreatePost? <CreatePost onclose={handlePostCreation}/> : <></>}

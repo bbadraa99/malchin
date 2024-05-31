@@ -3,12 +3,20 @@ import React from 'react'
 
 
 export interface CommentElements {
+    id:string;
     email: string;
     message: string;
     timestamp?: Timestamp;
   }
+interface CommentProps {
+  isUser: boolean;
+  email: string;
+  message: string;
+  timestamp?: Timestamp;
+  onclick: () => void;
+}
 
-const Comment = (props: CommentElements) => {
+const Comment = (props: CommentProps) => {
   const getTimeAgo = (timestamp: Timestamp) => {
     if (!timestamp) return '';
     const now = new Date();
@@ -28,10 +36,19 @@ const Comment = (props: CommentElements) => {
     return `${yearsAgo} years ago`;
   };
   return (
-    <div className='bg-gray-300 rounded-xl px-4 py-2'>
+    <div className='bg-gray-300 rounded-xl px-4 py-2 flex flex-row'>
+      <div className='w-full'>
         <p className='font-spartan bold-18 text-black '>{props.email}</p>
         <p className='font-spartan regular-18 text-black'>{props.message}</p>
         <p className='font-spartan regular-14 text-gray-700'>{props.timestamp ? getTimeAgo(props.timestamp) : ''}</p>
+      </div>
+      {/* Delete button */}
+      {props.isUser && 
+        <div className='flex items-center'>
+          <button className='h-fit bg-transparent text-white hover:bg-gray-100 hover:text-background-10 border-white px-4 py-1 border-2 rounded-md regular-18 font-spartan' onClick={props.onclick}>Delete</button>
+        </div>}
+      
+      
     </div>
   )
 }

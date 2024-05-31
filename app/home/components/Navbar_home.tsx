@@ -13,11 +13,11 @@ const Navbar_home = () => {
     const [user] = useAuthState(auth);
     const router = useRouter();
 
-    // useEffect(() => {
-    //     if (!user) {
-    //         router.push('/');
-    //     }
-    // }, [user, router]);
+    useEffect(() => {
+        if (!user) {
+            router.push('/');
+        }
+    }, [user, router]);
 
     const handleSignOut = () => {
         signOut(auth)

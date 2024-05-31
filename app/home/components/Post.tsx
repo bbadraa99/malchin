@@ -5,6 +5,8 @@ import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp, Timest
 import { db } from '../../firebase/config';
 import { useAuthState } from'react-firebase-hooks/auth';
 import { auth } from '@/app/firebase/config';
+import { doc, deleteDoc } from 'firebase/firestore'; // Import deleteDoc and doc
+
 
 interface PostProps {
     id: string;
@@ -19,17 +21,14 @@ interface PostProps {
 
 const Post = (props: PostProps) => {
     const [comments, setComments] = useState<CommentElements[]>([]); // State to hold the list of comments
-    //retrieve the comments from the database
-
-    //get the current user
     const [user] = useAuthState(auth);
-    
     
     if (user) {
         const q = query(collection(db, "posts", props.id, 'comments'), orderBy("timestamp", "desc"));
         const unsubscribe = onSnapshot(q, 
             (snapshot) => {
                 const commentsData = snapshot.docs.map(doc => ({
+                    id: doc.id,
                     email: doc.data().email,
                     message: doc.data().message,
                     timestamp: doc.data().timestamp,
@@ -40,7 +39,7 @@ const Post = (props: PostProps) => {
     }
     
 
-    const [comment, setComment] = useState<CommentElements>({email: "", message:"", timestamp: Timestamp.now()}); // State to hold the input value
+    const [comment, setComment] = useState<CommentElements>({id:"12", email: "", message:"", timestamp: Timestamp.now()}); // State to hold the input value
 
     const postCommment = async () => {
         if (comment.message.trim() !== '' && user) {
@@ -63,6 +62,17 @@ const Post = (props: PostProps) => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setComment({...comment, message:event.target.value}); // Update the state with the input value
     };
+
+    //Handle delete comment
+    const deleteComment = async (id: string) => {
+        const docRef = doc(db, "posts", props.id, 'comments', id); // Correctly reference the document
+        await deleteDoc(docRef); 
+    }
+
+    const handleDelete = (id: string) => {
+        deleteComment(id);
+    }
+    
 
     const style = "pt-2 font-spartan text-background-10 text-left regular-24"
 
@@ -117,7 +127,8 @@ const Post = (props: PostProps) => {
             <div className='pt-4 flex flex-col space-y-4'>
                 {
                     comments.map(comment => {
-                        return <Comment email={comment.email} message={comment.message} timestamp={comment.timestamp}/>
+                        const isCommentUser: boolean = user ? user.email === comment.email : false;
+                        return <Comment email={comment.email} message={comment.message} timestamp={comment.timestamp} onclick={() => handleDelete(comment.id)} isUser={isCommentUser}/>
                     })
                 }
             </div>
