@@ -1,10 +1,11 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth } from '@/app/firebase/config';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const SigninPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -26,6 +27,12 @@ const SigninPage: React.FC = () => {
       console.error(e);
     }
   };
+
+  useEffect(() => {
+      if (user) {
+          router.push('/home');
+      }
+  }, [user, router]);
 
   return (
     <div className="min-h-screen flex items-center pt-10 lg:pt-16  bg-background-10 flex-col justify-items-stretch">

@@ -34,7 +34,7 @@ const Navbar_home = () => {
         <div className='sticky w-full bg-background-10 flex-row z-10 flexBetween shadow-lg rounded-b-xl'>
             <div className='px-6'>
                 <div className='w-16 lg:w-20'>
-                    <Image src="/malchin_green.png" width={10} height={10} alt="logo" layout="responsive" className="w-24" />
+                    <Link href="/" className="cursor-pointer"><Image src="/malchin_green.png" width={10} height={10} alt="logo" layout="responsive" className="w-24" /></Link>
                 </div>
             </div>
             <p className="hidden sm:block px-16 py-2 rounded-lg hover:bg-gray-100 hover:bg-opacity-30 text-white font-spartan regular-20 cursor-pointer">Feed</p>
