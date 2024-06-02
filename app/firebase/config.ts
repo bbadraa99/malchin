@@ -5,13 +5,14 @@ import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  apiKey: "AIzaSyCLf3_6rqsWV_mDUWdkM1e8qG6BS0Zk0Bs",
+  authDomain: "malchin.firebaseapp.com",
+  databaseURL: "https://malchin-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "malchin",
+  storageBucket: "malchin.appspot.com",
+  messagingSenderId: "1035097313759",
+  appId: "1:1035097313759:web:387c367d033a7028d8346a",
+  measurementId: "G-00ZJDV938C",
 };
 
 // Initialize Firebase
