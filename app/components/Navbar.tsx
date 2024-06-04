@@ -7,7 +7,7 @@ const Navbar = () => {
     <div className='sticky w-full bg-background-10 flex-row z-50 flexBetween shadow-lg rounded-b-xl'>
         <div className='px-6'>
             <div className='w-16 lg:w-20'>
-                <p className="p-2 bold-20 text-white font-spartan">Malchin</p>
+                <p className="p-4 bold-20 text-white font-spartan">Malchin</p>
             </div>
         </div>
         <div className='px-6 space-x-6'>
