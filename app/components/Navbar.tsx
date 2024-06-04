@@ -7,7 +7,7 @@ const Navbar = () => {
     <div className='sticky w-full bg-background-10 flex-row z-50 flexBetween shadow-lg rounded-b-xl'>
         <div className='px-6'>
             <div className='w-16 lg:w-20'>
-                <Image src="/malchin_green.png" width={10} height={10} alt="logo" layout="responsive" className="w-24" />
+                <p className="p-2 bold-20">Malchin</p>
             </div>
         </div>
         <div className='px-6 space-x-6'>
