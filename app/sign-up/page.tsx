@@ -34,7 +34,7 @@ const SignupPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center pt-5 md:pt-10 bg-background-10 flex-col">
-      <div className='w-100 h-100'><Image src="/malchin_green.png" width={500} height={500} alt="logo" className="w-24" /></div>
+      <div className='w-100 h-100'><p className="p-4 bold-32 text-white font-spartan">Malchin</p></div>
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center text-black">Sign Up</h2>
         <form onSubmit={handleSubmit}>
